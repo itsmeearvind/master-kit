@@ -10,5 +10,8 @@
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.5.0"
+  },
+  "dependencies": {
+    "razorpay": "^2.9.8"
   }
 }
