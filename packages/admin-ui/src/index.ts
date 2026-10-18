@@ -1,8 +1,18 @@
 
-// admin.config.ts in client project
-// export const adminConfig = { branding: { logo: '/logo.png', primary: '#000' }, menu: [{ label: 'Users', path: '/admin/users', permission: 'user:read' }] }
+export * from './core/theme.js';
+export * from './core/components.js';
 
-export const AdminLayout = (props: any) => {
-  return `Admin layout with primary ${props.config?.branding?.primary}`;
+import { createTheme, defaultTheme, generateCSSVariables } from './core/theme.js';
+import { getButtonClasses, getCardClasses, getInputClasses, getTableClasses, defaultLayout } from './core/components.js';
+
+export const AdminUI = {
+  createTheme,
+  defaultTheme,
+  generateCSSVariables,
+  getButtonClasses,
+  getCardClasses,
+  getInputClasses,
+  getTableClasses,
+  defaultLayout,
+  version: '0.1.0',
 };
-// DataTable component with sort/filter/search using @maasters/search-filter inbuilt
