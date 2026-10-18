@@ -1,0 +1,92 @@
+
+// COPY THIS TO YOUR CLIENT'S prisma/schema.prisma
+// This creates tables in CLIENT's DB, not in our package
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  phone         String?  @unique
+  password      String?  // null for OAuth users
+  name          String?
+  image         String?
+  emailVerified DateTime?
+  phoneVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  verificationTokens VerificationToken[]
+  roles         UserRole[]
+
+  @@index([email])
+  @@index([phone])
+}
+
+model Account {
+  id                String @id @default(cuid())
+  userId            String
+  type              String // oauth, email, phone
+  provider          String // google, github, facebook, email, phone
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  sessionToken String   @unique
+  refreshToken String   @unique
+  expires      DateTime
+  ip           String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([sessionToken])
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String   // email or phone
+  token      String   @unique
+  type       String   // email_verify, phone_otp, password_reset
+  expires    DateTime
+  attempts   Int      @default(0)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([identifier, token])
+  @@index([identifier])
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  permissions Json     // ["user:read", "order:*"] etc
+  createdAt   DateTime @default(now())
+
+  users UserRole[]
+}
+
+model UserRole {
+  userId String
+  roleId String
+  assignedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+}
