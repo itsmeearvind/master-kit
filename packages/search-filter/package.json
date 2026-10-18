@@ -1,0 +1,14 @@
+{
+  "name": "@maasters/search-filter",
+  "version": "0.1.0",
+  "description": "Sort filter search",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm,cjs"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0"
+  }
+}
