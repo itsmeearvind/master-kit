@@ -8,10 +8,9 @@
     "build": "tsup src/index.ts --dts --format esm,cjs"
   },
   "devDependencies": {
+    "@types/node": "^20.0.0",
     "tsup": "^8.0.0",
-    "typescript": "^5.5.0",
-    "@types/bcryptjs": "^3.0.0",
-    "@types/node": "^20.0.0"
+    "typescript": "^5.5.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
